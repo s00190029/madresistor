@@ -4,10 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     TextView hello;
+    private Spinner spin1, spin2, spin3;
+    //colorSpin=(Spinner)findViewById(R.id.spnColor);
+//spnColors.setAdapter(new SpinnerAdapter(this));
 
     public double calcOhms(resistorColor col1In, resistorColor col2In, resistorColor col3In){
         String twoBands = String.valueOf(col1In.band)+String.valueOf(col2In.band);
@@ -21,13 +28,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        // link
+        // link & spinner setup
         hello = findViewById(R.id.tv_hello);
+        spin1 = findViewById(R.id.spin1);
+        spin2 = findViewById(R.id.spin2);
+        spin3 = findViewById(R.id.spin3);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.colorTextList, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin1.setAdapter(adapter);
+        spin2.setAdapter(adapter);
+        spin3.setAdapter(adapter);
+        spin1.setOnItemSelectedListener(this);
+        spin2.setOnItemSelectedListener(this);
+        spin3.setOnItemSelectedListener(this);
 
-        //Colors
+        //Setup color objects using resistorColor class
         // BLACK
         resistorColor black = new resistorColor();
         black.band = 0;
@@ -107,14 +123,31 @@ public class MainActivity extends AppCompatActivity {
         none.tolerance = 0.20f;
         none.color = Color.TRANSPARENT;
 
-        double testOut = calcOhms(red,black,red);
+        double testOut = calcOhms(green,black,red);
 
         hello.setText(String.valueOf(testOut));
 
+    }
 
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //String choice = AdapterView.getItem
+        //THIS ISN'T WORKING LIKE THE TUTORIAL
+         String choice = parent.getItemAtPosition(position).toString();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
 
     }
+
+    //FIND SPINNER VALUES
+    resistorColor col1, col2, col3;
+    String lol = "hey";
+
 
 
 
